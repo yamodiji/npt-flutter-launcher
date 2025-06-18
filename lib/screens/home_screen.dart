@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final searchProvider = Provider.of<SearchProvider>(context, listen: false);
     
     if (_searchFocusNode.hasFocus) {
-      searchProvider.showSuggestions();
+      searchProvider.showSuggestionsPanel();
     } else {
       // Small delay to allow for suggestion selection
       Future.delayed(const Duration(milliseconds: 200), () {
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Consumer2<AppProvider, SearchProvider>(
           builder: (context, appProvider, searchProvider, child) {

@@ -152,7 +152,7 @@ class SearchProvider extends ChangeNotifier {
   }
 
   /// Show suggestions
-  void showSuggestions() {
+  void showSuggestionsPanel() {
     if (_searchQuery.isNotEmpty || _searchHistory.isNotEmpty) {
       _showSuggestions = true;
       notifyListeners();
