@@ -7,7 +7,8 @@ import 'package:npt/providers/search_provider.dart';
 
 void main() {
   group('NPT App Widget Tests', () {
-    testWidgets('App should load without crashing', (WidgetTester tester) async {
+    testWidgets('App should load without crashing',
+        (WidgetTester tester) async {
       // Build our app and trigger a frame.
       await tester.pumpWidget(const NPTApp());
 
@@ -15,7 +16,8 @@ void main() {
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('Home screen should display app title', (WidgetTester tester) async {
+    testWidgets('Home screen should display app title',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const NPTApp());
       await tester.pumpAndSettle();
 
@@ -35,7 +37,7 @@ void main() {
   group('Provider Tests', () {
     test('AppProvider initializes correctly', () {
       final appProvider = AppProvider();
-      
+
       expect(appProvider.allApps, isEmpty);
       expect(appProvider.isLoading, false);
       expect(appProvider.errorMessage, isNull);
@@ -43,7 +45,7 @@ void main() {
 
     test('SearchProvider initializes correctly', () {
       final searchProvider = SearchProvider();
-      
+
       expect(searchProvider.searchQuery, isEmpty);
       expect(searchProvider.searchHistory, isEmpty);
       expect(searchProvider.showSuggestions, false);
@@ -51,19 +53,19 @@ void main() {
 
     test('SearchProvider updates search query', () {
       final searchProvider = SearchProvider();
-      
+
       searchProvider.updateSearchQuery('test');
-      
+
       expect(searchProvider.searchQuery, 'test');
       expect(searchProvider.hasSearchQuery, true);
     });
 
     test('SearchProvider clears search', () {
       final searchProvider = SearchProvider();
-      
+
       searchProvider.updateSearchQuery('test');
       searchProvider.clearSearch();
-      
+
       expect(searchProvider.searchQuery, isEmpty);
       expect(searchProvider.hasSearchQuery, false);
     });
@@ -76,4 +78,4 @@ void main() {
       expect(true, isTrue); // Placeholder test
     });
   });
-} 
+}

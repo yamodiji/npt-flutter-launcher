@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 class SearchBarWidget extends StatefulWidget {
   /// Focus node for external focus management
   final FocusNode? focusNode;
-  
+
   /// Callback when search text changes (with debouncing)
   final ValueChanged<String>? onSearchChanged;
-  
+
   /// Callback when search is submitted (enter key or search button)
   final ValueChanged<String>? onSearchSubmitted;
-  
+
   /// Callback when clear button is pressed
   final VoidCallback? onClearSearch;
-  
+
   /// Initial search text
   final String initialText;
-  
+
   /// Hint text for the search field
   final String hintText;
 
@@ -38,17 +38,17 @@ class SearchBarWidget extends StatefulWidget {
 class _SearchBarWidgetState extends State<SearchBarWidget> {
   /// Text editing controller for the search input
   late final TextEditingController _controller;
-  
+
   /// Internal focus node if none provided
   late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize controller with initial text
     _controller = TextEditingController(text: widget.initialText);
-    
+
     // Use provided focus node or create internal one
     _focusNode = widget.focusNode ?? FocusNode();
   }
@@ -58,7 +58,10 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withOpacity(0.3),
         border: Border.all(
           color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
           width: 1,
@@ -73,15 +76,15 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+
             /// Leading search icon
             prefixIcon: Icon(
               Icons.search,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            
+
             /// Trailing clear button (only show when text is present)
             suffixIcon: ValueListenableBuilder<TextEditingValue>(
               valueListenable: _controller,
@@ -89,7 +92,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 if (value.text.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                
+
                 return IconButton(
                   icon: Icon(
                     Icons.clear,
@@ -104,29 +107,29 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 );
               },
             ),
-            
+
             /// Remove default input decoration borders
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-            
+
             /// Content padding
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 12,
             ),
-            
+
             /// Dense layout for better mobile experience
             isDense: true,
           ),
-          
+
           /// Text input configuration
           textInputAction: TextInputAction.search,
           autocorrect: false,
           enableSuggestions: false,
-          
+
           /// Callbacks
           onChanged: widget.onSearchChanged,
           onSubmitted: widget.onSearchSubmitted,
@@ -138,12 +141,12 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   void dispose() {
     _controller.dispose();
-    
+
     // Only dispose internal focus node, not externally provided one
     if (widget.focusNode == null) {
       _focusNode.dispose();
     }
-    
+
     super.dispose();
   }
-} 
+}

@@ -5,19 +5,19 @@ import 'dart:typed_data';
 class AppInfo {
   /// Package name used for launching the app
   final String packageName;
-  
+
   /// Display name of the application
   final String appName;
-  
+
   /// App icon data in bytes format
   final Uint8List? icon;
-  
+
   /// System app flag - true if it's a system app, false if user-installed
   final bool isSystemApp;
-  
+
   /// Version name of the application
   final String version;
-  
+
   /// App category (if available)
   final String? category;
 
@@ -46,7 +46,7 @@ class AppInfo {
   /// Removes common prefixes and cleans up the name for better UX
   String get displayName {
     String name = appName;
-    
+
     // Remove common prefixes for cleaner display
     final prefixesToRemove = ['com.', 'org.', 'net.', 'io.'];
     for (final prefix in prefixesToRemove) {
@@ -55,7 +55,7 @@ class AppInfo {
         break;
       }
     }
-    
+
     return name;
   }
 
@@ -63,10 +63,10 @@ class AppInfo {
   /// Case-insensitive search in both package name and app name
   bool matchesSearch(String query) {
     if (query.isEmpty) return true;
-    
+
     final lowercaseQuery = query.toLowerCase();
     return appName.toLowerCase().contains(lowercaseQuery) ||
-           packageName.toLowerCase().contains(lowercaseQuery);
+        packageName.toLowerCase().contains(lowercaseQuery);
   }
 
   @override
@@ -83,4 +83,4 @@ class AppInfo {
   String toString() {
     return 'AppInfo{packageName: $packageName, appName: $appName, isSystemApp: $isSystemApp}';
   }
-} 
+}

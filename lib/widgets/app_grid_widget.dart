@@ -7,16 +7,16 @@ import '../models/app_info.dart';
 class AppGridWidget extends StatelessWidget {
   /// List of apps to display
   final List<AppInfo> apps;
-  
+
   /// Number of grid columns
   final int gridColumns;
-  
+
   /// Callback when an app is tapped
   final ValueChanged<AppInfo>? onAppTap;
-  
+
   /// Spacing between grid items
   final double spacing;
-  
+
   /// App icon size
   final double iconSize;
 
@@ -66,10 +66,10 @@ class AppGridWidget extends StatelessWidget {
 class AppGridItem extends StatelessWidget {
   /// App information to display
   final AppInfo app;
-  
+
   /// Icon size
   final double iconSize;
-  
+
   /// Tap callback
   final VoidCallback? onTap;
 
@@ -108,16 +108,16 @@ class AppGridItem extends StatelessWidget {
                 child: _buildAppIcon(context),
               ),
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             /// App name with proper text handling
             Flexible(
               child: Text(
                 app.displayName,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                      fontWeight: FontWeight.w500,
+                    ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -147,7 +147,7 @@ class AppGridItem extends StatelessWidget {
         cacheHeight: (iconSize * 2).round(),
       );
     }
-    
+
     // Fallback to default icon
     return _buildFallbackIcon(context);
   }
@@ -174,13 +174,13 @@ class AppGridItem extends StatelessWidget {
 class EmptyAppGridWidget extends StatelessWidget {
   /// Message to display
   final String message;
-  
+
   /// Icon to show
   final IconData icon;
-  
+
   /// Action button text
   final String? actionText;
-  
+
   /// Action button callback
   final VoidCallback? onAction;
 
@@ -208,8 +208,8 @@ class EmptyAppGridWidget extends StatelessWidget {
             Text(
               message,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
               textAlign: TextAlign.center,
             ),
             if (actionText != null && onAction != null) ...[
@@ -224,4 +224,4 @@ class EmptyAppGridWidget extends StatelessWidget {
       ),
     );
   }
-} 
+}

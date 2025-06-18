@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 class SearchSuggestionsWidget extends StatelessWidget {
   /// List of suggestions to display
   final List<String> suggestions;
-  
+
   /// Callback when a suggestion is selected
   final ValueChanged<String>? onSuggestionSelected;
-  
+
   /// Maximum number of suggestions to show
   final int maxSuggestions;
 
@@ -62,21 +62,21 @@ class SearchSuggestionsWidget extends StatelessWidget {
                   Text(
                     'Recent searches',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ],
               ),
             ),
           ],
-          
+
           /// Suggestions list
           ...limitedSuggestions.asMap().entries.map((entry) {
             final index = entry.key;
             final suggestion = entry.value;
             final isLast = index == limitedSuggestions.length - 1;
-            
+
             return SearchSuggestionItem(
               suggestion: suggestion,
               isLast: isLast,
@@ -94,10 +94,10 @@ class SearchSuggestionsWidget extends StatelessWidget {
 class SearchSuggestionItem extends StatelessWidget {
   /// Suggestion text to display
   final String suggestion;
-  
+
   /// Whether this is the last item (affects border)
   final bool isLast;
-  
+
   /// Tap callback
   final VoidCallback? onTap;
 
@@ -132,32 +132,35 @@ class SearchSuggestionItem extends StatelessWidget {
                   size: 18,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-                
+
                 const SizedBox(width: 12),
-                
+
                 /// Suggestion text
                 Expanded(
                   child: Text(
                     suggestion,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                
+
                 /// Arrow icon (optional)
                 Icon(
                   Icons.north_west,
                   size: 16,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurfaceVariant
+                      .withOpacity(0.6),
                 ),
               ],
             ),
           ),
         ),
-        
+
         /// Divider (except for last item)
         if (!isLast)
           Divider(
@@ -207,18 +210,19 @@ class EmptySearchSuggestionsWidget extends StatelessWidget {
           Icon(
             Icons.search,
             size: 32,
-            color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6),
+            color:
+                Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6),
           ),
           const SizedBox(height: 12),
           Text(
             message,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
-} 
+}

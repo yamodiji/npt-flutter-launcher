@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class Debouncer {
   /// Delay duration before executing the function
   final Duration delay;
-  
+
   /// Timer instance for managing the delay
   Timer? _timer;
 
@@ -18,7 +18,7 @@ class Debouncer {
   void call(VoidCallback callback) {
     // Cancel any existing timer to reset the delay
     _timer?.cancel();
-    
+
     // Start a new timer with the specified delay
     _timer = Timer(delay, callback);
   }
@@ -36,4 +36,4 @@ class Debouncer {
   void dispose() {
     cancel();
   }
-} 
+}

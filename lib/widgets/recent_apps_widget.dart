@@ -7,10 +7,10 @@ import '../models/app_info.dart';
 class RecentAppsWidget extends StatelessWidget {
   /// List of recent apps to display
   final List<AppInfo> recentApps;
-  
+
   /// Callback when an app is tapped
   final ValueChanged<AppInfo>? onAppTap;
-  
+
   /// Icon size for recent apps
   final double iconSize;
 
@@ -46,16 +46,16 @@ class RecentAppsWidget extends StatelessWidget {
                 Text(
                   'Recent Apps',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(height: 12),
-          
+
           /// Horizontal scrollable list of recent apps
           SizedBox(
             height: iconSize + 48, // Icon + text + padding
@@ -76,9 +76,9 @@ class RecentAppsWidget extends StatelessWidget {
               },
             ),
           ),
-          
+
           const SizedBox(height: 8),
-          
+
           /// Divider
           Divider(
             color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
@@ -98,10 +98,10 @@ class RecentAppsWidget extends StatelessWidget {
 class RecentAppItem extends StatelessWidget {
   /// App information to display
   final AppInfo app;
-  
+
   /// Icon size
   final double iconSize;
-  
+
   /// Tap callback
   final VoidCallback? onTap;
 
@@ -141,17 +141,17 @@ class RecentAppItem extends StatelessWidget {
                 child: _buildAppIcon(context),
               ),
             ),
-            
+
             const SizedBox(height: 6),
-            
+
             /// App name (truncated for recent apps)
             Flexible(
               child: Text(
                 app.displayName,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                ),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                    ),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -181,7 +181,7 @@ class RecentAppItem extends StatelessWidget {
         cacheHeight: (iconSize * 2).round(),
       );
     }
-    
+
     // Fallback to default icon
     return _buildFallbackIcon(context);
   }
@@ -202,4 +202,4 @@ class RecentAppItem extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -8,7 +8,7 @@ class StorageHelper {
   static const String _searchHistoryKey = 'search_history';
   static const String _hideSystemAppsKey = 'hide_system_apps';
   static const String _gridColumnsKey = 'grid_columns';
-  
+
   static const int _maxRecentApps = 10;
   static const int _maxSearchHistory = 20;
 
@@ -17,12 +17,12 @@ class StorageHelper {
     try {
       final prefs = await SharedPreferences.getInstance();
       final recentAppsJson = prefs.getString(_recentAppsKey);
-      
+
       if (recentAppsJson != null) {
         final List<dynamic> recentAppsData = json.decode(recentAppsJson);
         return recentAppsData.cast<String>();
       }
-      
+
       return [];
     } catch (e) {
       // Return empty list if there's any error
@@ -35,18 +35,18 @@ class StorageHelper {
     try {
       final prefs = await SharedPreferences.getInstance();
       final recentApps = await getRecentApps();
-      
+
       // Remove the app if it already exists to avoid duplicates
       recentApps.remove(packageName);
-      
+
       // Add to the beginning of the list
       recentApps.insert(0, packageName);
-      
+
       // Limit the list size to prevent unlimited growth
       if (recentApps.length > _maxRecentApps) {
         recentApps.removeRange(_maxRecentApps, recentApps.length);
       }
-      
+
       // Save back to SharedPreferences
       await prefs.setString(_recentAppsKey, json.encode(recentApps));
     } catch (e) {
@@ -59,12 +59,12 @@ class StorageHelper {
     try {
       final prefs = await SharedPreferences.getInstance();
       final searchHistoryJson = prefs.getString(_searchHistoryKey);
-      
+
       if (searchHistoryJson != null) {
         final List<dynamic> searchHistoryData = json.decode(searchHistoryJson);
         return searchHistoryData.cast<String>();
       }
-      
+
       return [];
     } catch (e) {
       return [];
@@ -75,21 +75,21 @@ class StorageHelper {
   static Future<void> addSearchHistory(String searchTerm) async {
     try {
       if (searchTerm.trim().isEmpty) return;
-      
+
       final prefs = await SharedPreferences.getInstance();
       final searchHistory = await getSearchHistory();
-      
+
       // Remove if already exists to avoid duplicates
       searchHistory.remove(searchTerm);
-      
+
       // Add to the beginning
       searchHistory.insert(0, searchTerm);
-      
+
       // Limit the list size
       if (searchHistory.length > _maxSearchHistory) {
         searchHistory.removeRange(_maxSearchHistory, searchHistory.length);
       }
-      
+
       await prefs.setString(_searchHistoryKey, json.encode(searchHistory));
     } catch (e) {
       // Silent fail for storage errors
@@ -155,4 +155,4 @@ class StorageHelper {
       // Silent fail
     }
   }
-} 
+}

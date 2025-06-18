@@ -9,19 +9,19 @@ import '../utils/storage_helper.dart';
 class AppProvider extends ChangeNotifier {
   /// List of all installed applications
   List<AppInfo> _allApps = [];
-  
+
   /// List of recent apps (package names)
   List<String> _recentApps = [];
-  
+
   /// Loading state for async operations
   bool _isLoading = false;
-  
+
   /// Error message if any operation fails
   String? _errorMessage;
-  
+
   /// Flag to hide/show system apps
   bool _hideSystemApps = false;
-  
+
   /// Grid columns count for display
   int _gridColumns = 4;
 
@@ -91,7 +91,8 @@ class AppProvider extends ChangeNotifier {
 
       // Convert to our AppInfo model and sort alphabetically
       _allApps = apps.map((app) => AppInfo.fromDeviceApp(app)).toList();
-      _allApps.sort((a, b) => a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
+      _allApps.sort(
+          (a, b) => a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
 
       _setLoading(false);
     } catch (e) {
@@ -106,16 +107,16 @@ class AppProvider extends ChangeNotifier {
     try {
       // Attempt to launch the app
       final bool launched = await DeviceApps.openApp(packageName);
-      
+
       if (launched) {
         // Add to recent apps if launch was successful
         await StorageHelper.addRecentApp(packageName);
-        
+
         // Update local recent apps list
         _recentApps = await StorageHelper.getRecentApps();
         notifyListeners();
       }
-      
+
       return launched;
     } catch (e) {
       _setError('Failed to launch app: $e');
@@ -180,4 +181,4 @@ class AppProvider extends ChangeNotifier {
     // Clean up any resources if needed
     super.dispose();
   }
-} 
+}

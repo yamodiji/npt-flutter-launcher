@@ -20,19 +20,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   /// Focus node for search input management
   final FocusNode _searchFocusNode = FocusNode();
-  
+
   /// Scroll controller for the main content
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize providers when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeProviders();
     });
-    
+
     // Listen to focus changes to manage search suggestions
     _searchFocusNode.addListener(_onSearchFocusChanged);
   }
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _initializeProviders() async {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
     final searchProvider = Provider.of<SearchProvider>(context, listen: false);
-    
+
     // Initialize providers in parallel for better performance
     await Future.wait([
       appProvider.initialize(),
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Handle search focus changes to show/hide suggestions
   void _onSearchFocusChanged() {
     final searchProvider = Provider.of<SearchProvider>(context, listen: false);
-    
+
     if (_searchFocusNode.hasFocus) {
       searchProvider.showSuggestionsPanel();
     } else {
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onSearchExecuted() {
     // Unfocus to hide keyboard and suggestions
     _searchFocusNode.unfocus();
-    
+
     // Scroll to top to show search results
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 /// App Bar with search functionality
                 _buildAppBar(context, appProvider, searchProvider),
-                
+
                 /// Search suggestions (shown when search is focused)
                 if (searchProvider.showSuggestions)
                   SearchSuggestionsWidget(
@@ -103,24 +103,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                
+
                 /// Main content area
                 Expanded(
-                  child: _buildMainContent(context, appProvider, searchProvider),
+                  child:
+                      _buildMainContent(context, appProvider, searchProvider),
                 ),
               ],
             );
           },
         ),
       ),
-      
+
       /// Floating action button for settings/refresh
       floatingActionButton: _buildFloatingActionButton(context),
     );
   }
 
   /// Build the app bar with search functionality
-  Widget _buildAppBar(BuildContext context, AppProvider appProvider, SearchProvider searchProvider) {
+  Widget _buildAppBar(BuildContext context, AppProvider appProvider,
+      SearchProvider searchProvider) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
@@ -143,22 +145,22 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 'NPT Launcher',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
               ),
               if (!appProvider.isLoading)
                 Text(
                   '${appProvider.filteredApps.length} apps',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                 ),
             ],
           ),
-          
+
           const SizedBox(height: 12),
-          
+
           /// Search bar
           SearchBarWidget(
             focusNode: _searchFocusNode,
@@ -182,7 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// Build main content based on current state
-  Widget _buildMainContent(BuildContext context, AppProvider appProvider, SearchProvider searchProvider) {
+  Widget _buildMainContent(BuildContext context, AppProvider appProvider,
+      SearchProvider searchProvider) {
     // Show loading indicator while apps are being fetched
     if (appProvider.isLoading) {
       return const Center(
@@ -261,21 +264,22 @@ class _HomeScreenState extends State<HomeScreen> {
       controller: _scrollController,
       slivers: [
         /// Recent apps section (only show when not searching)
-        if (!searchProvider.hasSearchQuery && appProvider.recentAppsInfo.isNotEmpty)
+        if (!searchProvider.hasSearchQuery &&
+            appProvider.recentAppsInfo.isNotEmpty)
           SliverToBoxAdapter(
             child: RecentAppsWidget(
               recentApps: appProvider.recentAppsInfo,
               onAppTap: (app) => appProvider.launchApp(app.packageName),
             ),
           ),
-        
+
         /// Main apps grid
         AppGridWidget(
           apps: appsToShow,
           gridColumns: appProvider.gridColumns,
           onAppTap: (app) => appProvider.launchApp(app.packageName),
         ),
-        
+
         /// Bottom padding for floating action button
         const SliverPadding(padding: EdgeInsets.only(bottom: 80)),
       ],
@@ -310,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 16),
-              
+
               /// Toggle system apps
               ListTile(
                 leading: const Icon(Icons.android),
@@ -320,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onChanged: (_) => appProvider.toggleSystemApps(),
                 ),
               ),
-              
+
               /// Grid columns selection
               ListTile(
                 leading: const Icon(Icons.grid_view),
@@ -340,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              
+
               /// Refresh apps
               ListTile(
                 leading: const Icon(Icons.refresh),
@@ -350,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   appProvider.refreshApps();
                 },
               ),
-              
+
               /// Clear recent apps
               if (appProvider.recentApps.isNotEmpty)
                 ListTile(
@@ -374,4 +378,4 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.dispose();
     super.dispose();
   }
-} 
+}

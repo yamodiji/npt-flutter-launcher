@@ -9,13 +9,13 @@ import '../utils/storage_helper.dart';
 class SearchProvider extends ChangeNotifier {
   /// Current search query string
   String _searchQuery = '';
-  
+
   /// List of search history terms
   List<String> _searchHistory = [];
-  
+
   /// Debouncer for search input (300ms delay as requested)
   final Debouncer _searchDebouncer = Debouncer();
-  
+
   /// Flag to show/hide search suggestions
   bool _showSuggestions = false;
 
@@ -45,19 +45,19 @@ class SearchProvider extends ChangeNotifier {
   /// The actual search execution is debounced by 300ms to prevent excessive processing
   void updateSearchQuery(String query, {VoidCallback? onSearchExecuted}) {
     _searchQuery = query;
-    
+
     // Show suggestions when query is not empty
     _showSuggestions = query.isNotEmpty;
-    
+
     // Notify listeners immediately for UI updates (search field)
     notifyListeners();
-    
+
     // Debounce the actual search execution to avoid excessive processing
     _searchDebouncer.call(() {
       if (onSearchExecuted != null) {
         onSearchExecuted();
       }
-      
+
       // Hide suggestions after search is executed
       _showSuggestions = false;
       notifyListeners();
@@ -76,7 +76,7 @@ class SearchProvider extends ChangeNotifier {
     if (_searchQuery.trim().isEmpty) {
       return apps;
     }
-    
+
     return apps.where((app) => app.matchesSearch(_searchQuery)).toList();
   }
 
@@ -85,13 +85,14 @@ class SearchProvider extends ChangeNotifier {
     if (_searchQuery.trim().isEmpty) {
       return _searchHistory.take(5).toList(); // Show recent searches
     }
-    
+
     // Filter history based on current query
     final suggestions = _searchHistory
-        .where((term) => term.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .where(
+            (term) => term.toLowerCase().contains(_searchQuery.toLowerCase()))
         .take(5)
         .toList();
-    
+
     return suggestions;
   }
 
@@ -128,14 +129,14 @@ class SearchProvider extends ChangeNotifier {
   void selectSuggestion(String suggestion, {VoidCallback? onSearchExecuted}) {
     _searchQuery = suggestion;
     _showSuggestions = false;
-    
+
     // Execute search immediately for selected suggestions
     executeSearch(suggestion);
-    
+
     if (onSearchExecuted != null) {
       onSearchExecuted();
     }
-    
+
     notifyListeners();
   }
 
@@ -164,4 +165,4 @@ class SearchProvider extends ChangeNotifier {
     _searchDebouncer.dispose();
     super.dispose();
   }
-} 
+}
