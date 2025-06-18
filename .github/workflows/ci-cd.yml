@@ -145,7 +145,7 @@ jobs:
     name: Build Android APK
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [analyze, test]
+    needs: [analyze]
     strategy:
       matrix:
         build-type: [debug, release]
@@ -328,29 +328,36 @@ jobs:
     name: Build Notification
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [build, test]
+    needs: [analyze, build, test]
     if: always()
 
     steps:
       - name: Report build status
         run: |
+          ANALYZE_STATUS="${{ needs.analyze.result }}"
           BUILD_STATUS="${{ needs.build.result }}"
           TEST_STATUS="${{ needs.test.result }}"
           
           echo "🔍 Job Status Check:"
+          echo "Analyze Status: $ANALYZE_STATUS"
           echo "Build Status: $BUILD_STATUS"
           echo "Test Status: $TEST_STATUS"
           
-          if [ "$BUILD_STATUS" = "success" ] && [ "$TEST_STATUS" = "success" ]; then
-            echo "✅ Build and tests completed successfully!"
+          if [ "$ANALYZE_STATUS" = "success" ] && [ "$BUILD_STATUS" = "success" ] && [ "$TEST_STATUS" = "success" ]; then
+            echo "✅ All jobs completed successfully!"
             # Note: Environment variables from matrix jobs aren't available here
             echo "📱 APK generated and uploaded to artifacts"
             echo "🏆 Check individual job logs for performance metrics"
             echo "📊 Check test job for coverage details"
           else
-            echo "❌ Build or tests failed"
+            echo "❌ One or more jobs failed or were skipped"
+            echo "Analyze result: $ANALYZE_STATUS"
             echo "Build result: $BUILD_STATUS"
             echo "Test result: $TEST_STATUS"
+            
+            if [ "$ANALYZE_STATUS" != "success" ]; then
+              echo "⚠️  Analyze job failed - this will cause other jobs to be skipped"
+            fi
             exit 1
           fi
 
