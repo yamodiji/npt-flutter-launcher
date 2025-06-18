@@ -334,13 +334,23 @@ jobs:
     steps:
       - name: Report build status
         run: |
-          if [ "${{ needs.build.result }}" = "success" ] && [ "${{ needs.test.result }}" = "success" ]; then
+          BUILD_STATUS="${{ needs.build.result }}"
+          TEST_STATUS="${{ needs.test.result }}"
+          
+          echo "🔍 Job Status Check:"
+          echo "Build Status: $BUILD_STATUS"
+          echo "Test Status: $TEST_STATUS"
+          
+          if [ "$BUILD_STATUS" = "success" ] && [ "$TEST_STATUS" = "success" ]; then
             echo "✅ Build and tests completed successfully!"
-            echo "📱 APK Size: ${{ env.APK_SIZE_MB }}MB"
-            echo "🏆 Performance: ${{ env.PERFORMANCE_RATING }}"
-            echo "📊 Coverage: ${{ env.COVERAGE_PERCENTAGE }}"
+            # Note: Environment variables from matrix jobs aren't available here
+            echo "📱 APK generated and uploaded to artifacts"
+            echo "🏆 Check individual job logs for performance metrics"
+            echo "📊 Check test job for coverage details"
           else
             echo "❌ Build or tests failed"
+            echo "Build result: $BUILD_STATUS"
+            echo "Test result: $TEST_STATUS"
             exit 1
           fi
 
